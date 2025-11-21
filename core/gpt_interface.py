@@ -1,6 +1,7 @@
 # GPT-OSS interface
 from openai import OpenAI
 from config.settings import HF_TOKEN
+from json import loads
 
 class GPTInterface:
     def __init__(self, model_path):
@@ -11,11 +12,25 @@ class GPTInterface:
         )
 
     def analyze_code(self, code: str, language: str) -> str:
+
+        output_format = """
+        {
+            "file": "api/login.py",
+            "language": "python",
+            "analysis": {
+                "vulnerability": "SQL injection due to string concatenation in query",
+                "exploit": "Attacker can inject SQL such as ' OR 1=1 -- to bypass login",
+                "mitigation": "Use parameterized queries: cursor.execute('SELECT * FROM users WHERE name=?', (name,))"
+            }
+        }
+
+        """
         response = self.client.chat.completions.create(
             model=self.model_path,
-            messages=[{"role": "user", "content": f"Here is a {language} file. can you spot the security vulnerability?! just give me a short answer of the vulnerability plus the possible exploit." 
+            messages=[{"role": "user", "content": f"Here is a {language} file. can you spot the security vulnerability?! give me the result in the following json format sample (remove the ``` code block): \n" + output_format 
                 + f'\n{code}\n'
             }],
         )
 
-        return response.choices[0].message.content
+        print(response.choices[0].message.content)
+        return loads(response.choices[0].message.content)

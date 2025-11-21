@@ -8,13 +8,13 @@ from config.settings import EXT_LANG_MAP
 from time import sleep
 
 if __name__ == '__main__':
-    code_files = get_files_recursive('data/samples/box2/', EXT_LANG_MAP)
+    code_files = get_files_recursive('data/samples/box2', EXT_LANG_MAP)
     results = []
     for f in code_files:
         content = parse_code(f)
         lang = detect_language(f)
         analysis = analyze_file(content, lang)
-        sleep(3)
-        results.append({"file": f, "language": lang, "analysis": analysis})
+        sleep(10)
+        results.append(analysis)
     generate_report(results)
 
