@@ -16,3 +16,4 @@ report/*
 data/samples/*
 
 .zshrc
+.DS_Store
