@@ -9,5 +9,6 @@ EXT_LANG_MAP = {
     '.java': 'java',
     '.c': 'c',
     '.cpp': 'cpp',
-    '.php': 'php'
+    '.php': 'php',
+    '.go': 'go'
 }
